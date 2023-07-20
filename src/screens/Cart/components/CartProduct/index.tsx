@@ -1,30 +1,26 @@
-import {View, Text, Pressable} from 'react-native';
 import React, {useState} from 'react';
-import {IProduct} from '../../../../constants/types';
-import styles from './style';
+import {View, Text, Pressable} from 'react-native';
+
 import FastImage from 'react-native-fast-image';
+
 import {useAppDispatch} from '../../../../store';
 import {
   decreaseToAmount,
   increaseToAmount,
 } from '../../../../store/slices/cartSlice';
 
+import {IProduct} from '../../../../constants/types';
+import styles from './style';
+
 const CartProduct = ({item}: {item: {item: IProduct; amount: number}}) => {
   const {item: _item, amount: _amount} = item;
-  const [amount, setAmount] = useState<number>(_amount);
 
   const dispatch = useAppDispatch();
 
   const decreaseAmount = () => {
-    setAmount(amount => {
-      return amount - 1;
-    });
     dispatch(decreaseToAmount(_item));
   };
   const increaseAmount = () => {
-    setAmount(amount => {
-      return amount + 1;
-    });
     dispatch(increaseToAmount(_item));
   };
 
@@ -32,7 +28,9 @@ const CartProduct = ({item}: {item: {item: IProduct; amount: number}}) => {
     <View style={styles.container}>
       <FastImage source={{uri: _item?.thumbnail}} style={styles.image} />
       <View style={styles.midContainer}>
-        <Text style={styles.brand} numberOfLines={1}>{_item?.brand + ' - ' + _item?.title}</Text>
+        <Text style={styles.brand} numberOfLines={1}>
+          {_item?.brand + ' - ' + _item?.title}
+        </Text>
         <View style={styles.priceContainer}>
           <Text>{_amount * _item?.price}$</Text>
         </View>
@@ -41,7 +39,7 @@ const CartProduct = ({item}: {item: {item: IProduct; amount: number}}) => {
         <Pressable onPress={decreaseAmount} style={styles.box}>
           <Text>-</Text>
         </Pressable>
-        <Text style={{width: 20, textAlign: 'center'}}>{amount}</Text>
+        <Text style={{width: 20, textAlign: 'center'}}>{_amount}</Text>
         <Pressable onPress={increaseAmount} style={styles.box}>
           <Text>+</Text>
         </Pressable>

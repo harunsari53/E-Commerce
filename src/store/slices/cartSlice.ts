@@ -13,6 +13,7 @@ export const cartSlice = createSlice({
       else arr[index] = {...arr[index], amount: arr[index].amount + 1};
       return arr;
     },
+
     decreaseToAmount: (state, action) => {
       let arr: any = state;
       const index = arr?.findIndex(
@@ -23,6 +24,7 @@ export const cartSlice = createSlice({
       } else arr = arr?.filter((x: any) => x.item.id != action?.payload?.id);
       return arr;
     },
+
     increaseToAmount: (state, action) => {
       let arr: any = state;
       const index = arr?.findIndex(
@@ -31,10 +33,14 @@ export const cartSlice = createSlice({
       arr[index] = {...arr[index], amount: arr[index].amount + 1};
       return arr;
     },
+
+    clearCart: () => {
+      return []
+    }
   },
 });
 
 // Action creators are generated for each case reducer function
 export default cartSlice.reducer;
-export const {addToCart, decreaseToAmount, increaseToAmount} =
+export const {addToCart, decreaseToAmount, increaseToAmount, clearCart} =
   cartSlice.actions;

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     padding: 10,
     justifyContent: 'center',
-    height: height * .3
+    height: height * 0.3,
   },
   emptyText: {
     fontSize: 18,
@@ -65,6 +65,31 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lightgrey,
     shadowOpacity: 1,
     shadowColor: colors.black,
+  },
+  deleteAll: {
+    position: 'absolute',
+    top: 60,
+    right: 20,
+  },
+  actionSheetContainer: {
+    height: 500,
+    width: '100%',
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cancel: {
+    width: '95%',
+    height: 40,
+    marginVertical: 10,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: colors.red,
+  },
+  cancelText: {
+    color: colors.red,
   },
 });
 

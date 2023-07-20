@@ -1,19 +1,28 @@
+import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, SafeAreaView, Pressable, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {Button, Icon} from 'general-components/src';
-import {colors} from '../../constants/colors';
 import {useNavigation} from '@react-navigation/native';
-import styles from './style';
-import {useAppSelector} from '../../store';
-import {IProduct} from '../../constants/types';
+
+import {Button, Icon} from 'general-components/src';
 import {CartProduct} from './components';
-import LoadingShop from '../../components/Loader/LoadingShop';
 import LoadingCart from '../../components/Loader/LoadingCart';
+
+import {useAppDispatch, useAppSelector} from '../../store';
+import {IProduct} from '../../constants/types';
+
+import styles from './style';
+import {colors} from '../../constants/colors';
+import {clearCart} from '../../store/slices/cartSlice';
 
 const CartScreen = () => {
   const cart = useAppSelector(state => state.cart);
   const arr = [...cart];
+  const dispatch = useAppDispatch();
+
   const [totalPrice, setTotalPrice] = useState<any>(0);
+
+  useEffect(() => {
+    calculateTotalPrice();
+  }, [arr]);
 
   const navigation = useNavigation<any>();
   const navigateToBack = () => {
@@ -23,10 +32,6 @@ const CartScreen = () => {
   const onPressToCategories = () => {
     navigation.navigate('Categories');
   };
-
-  useEffect(() => {
-    calculateTotalPrice();
-  }, [arr]);
 
   const renderItem = ({item}: {item: {item: IProduct; amount: number}}) => (
     <CartProduct item={item} />
@@ -41,6 +46,10 @@ const CartScreen = () => {
     setTotalPrice(price);
   };
 
+  const onClearCart = () => {
+    dispatch(clearCart());
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -51,9 +60,14 @@ const CartScreen = () => {
       </View>
       <FlatList data={cart} renderItem={renderItem} />
       {totalPrice > 0 && (
-        <View style={styles.priceContainer}>
-          <Text>Total Price: ${totalPrice}</Text>
-        </View>
+        <>
+          <Pressable style={styles.deleteAll} onPress={onClearCart}>
+            <Icon name="trash : entypo" size={25} color={colors.darkgrey} />
+          </Pressable>
+          <View style={styles.priceContainer}>
+            <Text>Total Price: ${totalPrice}</Text>
+          </View>
+        </>
       )}
       {totalPrice == 0 && (
         <View style={styles.loadingContainer}>
